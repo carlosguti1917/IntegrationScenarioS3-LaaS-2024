@@ -1,0 +1,2 @@
+KONG_SERVER_ADDRESS=localhost
+

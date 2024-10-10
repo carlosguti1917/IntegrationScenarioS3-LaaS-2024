@@ -110,6 +110,7 @@ cd Camunda-Terraform
 echo "CAMUNDA IS AVAILABLE HERE:"
 addressCamunda="$(terraform state show aws_instance.exampleInstallCamundaEngine |grep public_dns| sed "s/public_dns//g" | sed "s/=//g" | sed "s/\"//g" |sed "s/ //g" | sed "s/$esc\[[0-9;]*m//g" )"
 echo "http://"$addressCamunda":8080/camunda"
+echo ""$addressCamunda""
 echo
 cd ..
 
@@ -124,8 +125,8 @@ cd ..
 cd Quarkus-Terraform/Purchase
 ##terraform state show 'aws_instance.exampleDeployQuarkus' |grep public_dns
 echo "MICROSERVICE purchase IS AVAILABLE HERE:"
-addressMS="$(terraform state show aws_instance.exampleDeployQuarkus |grep public_dns | sed "s/public_dns//g" | sed "s/=//g" | sed "s/\"//g" |sed "s/ //g" | sed "s/$esc\[[0-9;]*m//g" )"
-echo "http://"$addressMS":8080/q/swagger-ui/"
+addressMSPurchase="$(terraform state show aws_instance.exampleDeployQuarkus |grep public_dns | sed "s/public_dns//g" | sed "s/=//g" | sed "s/\"//g" |sed "s/ //g" | sed "s/$esc\[[0-9;]*m//g" )"
+echo "http://"$addressMSPurchase":8080/q/swagger-ui/"
 echo
 cd ../..
 
@@ -133,8 +134,8 @@ cd ../..
 cd Quarkus-Terraform/customer
 #terraform state show 'aws_instance.exampleDeployQuarkus' |grep public_dns
 echo "MICROSERVICE customer IS AVAILABLE HERE:"
-addressMS="$(terraform state show aws_instance.exampleDeployQuarkus |grep public_dns | sed "s/public_dns//g" | sed "s/=//g" | sed "s/\"//g" |sed "s/ //g" | sed "s/$esc\[[0-9;]*m//g" )"
-echo "http://"$addressMS":8080/q/swagger-ui/"
+addressMSCustomer="$(terraform state show aws_instance.exampleDeployQuarkus |grep public_dns | sed "s/public_dns//g" | sed "s/=//g" | sed "s/\"//g" |sed "s/ //g" | sed "s/$esc\[[0-9;]*m//g" )"
+echo "http://"$addressMSCustomer":8080/q/swagger-ui/"
 echo
 cd ../..
 
@@ -142,8 +143,8 @@ cd ../..
 cd Quarkus-Terraform/shop
 #terraform state show 'aws_instance.exampleDeployQuarkus' |grep public_dns
 echo "MICROSERVICE shop IS AVAILABLE HERE:"
-addressMS="$(terraform state show aws_instance.exampleDeployQuarkus |grep public_dns | sed "s/public_dns//g" | sed "s/=//g" | sed "s/\"//g" |sed "s/ //g" | sed "s/$esc\[[0-9;]*m//g" )"
-echo "http://"$addressMS":8080/q/swagger-ui/"
+addressMSShop="$(terraform state show aws_instance.exampleDeployQuarkus |grep public_dns | sed "s/public_dns//g" | sed "s/=//g" | sed "s/\"//g" |sed "s/ //g" | sed "s/$esc\[[0-9;]*m//g" )"
+echo "http://"$addressMSShop":8080/q/swagger-ui/"
 echo
 cd ../..
 
@@ -151,8 +152,8 @@ cd ../..
 cd Quarkus-Terraform/loyaltycard
 #terraform state show 'aws_instance.exampleDeployQuarkus' |grep public_dns
 echo "MICROSERVICE loyaltycard IS AVAILABLE HERE:"
-addressMS="$(terraform state show aws_instance.exampleDeployQuarkus |grep public_dns | sed "s/public_dns//g" | sed "s/=//g" | sed "s/\"//g" |sed "s/ //g" | sed "s/$esc\[[0-9;]*m//g" )"
-echo "http://"$addressMS":8080/q/swagger-ui/"
+addressMSLoyalty="$(terraform state show aws_instance.exampleDeployQuarkus |grep public_dns | sed "s/public_dns//g" | sed "s/=//g" | sed "s/\"//g" |sed "s/ //g" | sed "s/$esc\[[0-9;]*m//g" )"
+echo "http://"$addressMSLoyalty":8080/q/swagger-ui/"
 echo
 cd ../..
 
@@ -162,6 +163,8 @@ terraform state show aws_db_instance.example |grep address
 terraform state show aws_db_instance.example |grep port
 echo
 cd ..
+
+
 
 # echo "KONG IS AVAILABLE HERE:" 
 # cd KongTerraform
@@ -176,3 +179,49 @@ cd ..
 # echo "http://"$addressKonga":1337/"
 # echo
 # cd ..
+
+#echo Quarkus - 
+cd Quarkus-Terraform/mock
+#terraform state show 'aws_instance.exampleDeployQuarkus' |grep public_dns
+echo "MICROSERVICE mock IS AVAILABLE HERE:"
+addressMSMock="$(terraform state show aws_instance.exampleDeployQuarkus |grep public_dns | sed "s/public_dns//g" | sed "s/=//g" | sed "s/\"//g" |sed "s/ //g" | sed "s/$esc\[[0-9;]*m//g" )"
+echo "http://"$addressMSMock":8080/mock"
+echo
+cd ../..
+
+. ./ClearKongAPIs.sh
+
+. ./BuildKongApis.sh
+
+. ./BuildKongAPIHealthcare.sh
+
+#. ./BuildKongAPisNobelPrize.sh
+
+
+
+sleep 60
+. ./CreateCustomerShop.sh
+
+# Showing all the PUBLIC_DNSs
+#echo CAMUNDA - 
+echo "CAMUNDA IS AVAILABLE HERE:"
+echo "http://"$addressCamunda":8080/camunda"
+
+echo "KAFKA IS AVAILABLE HERE:"
+echo ""$addresskafka""
+
+
+echo "MICROSERVICE purchase IS AVAILABLE HERE:"
+echo "http://"$addressMSPurchase":8080/q/swagger-ui/"
+
+#echo Quarkus - 
+echo "MICROSERVICE customer IS AVAILABLE HERE:"
+echo "http://"$addressMSCustomer":8080/q/swagger-ui/"
+
+#echo Quarkus - 
+echo "MICROSERVICE shop IS AVAILABLE HERE:"
+echo "http://"$addressMSShop":8080/q/swagger-ui/"
+
+#echo Quarkus - 
+echo "MICROSERVICE loyaltycard IS AVAILABLE HERE:"
+echo "http://"$addressMSLoyalty":8080/q/swagger-ui/"
